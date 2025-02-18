@@ -21,6 +21,7 @@ public class MySQLConnector : MonoBehaviour
     [Tooltip("Arrastra aquí el GameObject que tiene el script RotarRueda.")]
     public RotarRueda rotarRuedaScript;
     public Dinamo dinamoScript;
+    public LedController led;
 
     void Awake()
     {
@@ -84,7 +85,11 @@ public class MySQLConnector : MonoBehaviour
 
                         // Extraer el valor de RPM (asumiendo que el campo se llama "RPM")
                         float rpmValue = Convert.ToSingle(reader["RPM"]);
+                        float voltajeValue = Convert.ToSingle(reader["voltaje"]);
+                        float corrienteValue = Convert.ToSingle(reader["corriente"]);
                         Debug.Log("RPM value from DB: " + rpmValue);
+                        Debug.Log("Voltaje value from DB: " + voltajeValue);
+                        Debug.Log("Corriente value from DB: " + corrienteValue);
 
                         // Convertir RPM a grados/segundo: (RPM * 360°/60s) = RPM * 6
                         float degreesPerSecond = rpmValue * 6f;
@@ -94,6 +99,8 @@ public class MySQLConnector : MonoBehaviour
                         {
                             rotarRuedaScript.velocidadRotacion = degreesPerSecond;
                             dinamoScript.velocidadRotacion = degreesPerSecond;
+                            led.voltaje = voltajeValue;
+                            led.corriente = corrienteValue;
                         }
                         else
                         {
